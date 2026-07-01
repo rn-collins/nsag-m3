@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Psychedelic Harm Reduction Governance Readiness — NSAG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Syne:wght@500;600;700&family=Manrope:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --nsag: #4D45A8; --nsag-light: #E8E5F5;
+    --m: #4D45A8; --m-light: #E8E5F5;
+    --cream: #F6F3EC; --ink: #1C1B1F; --ink-mid: #4A4656; --ink-soft: #8A8497; --white: #FFFFFF;
+    --pioneering: #2E5A28; --emerging: #1B7A68; --developing: #B8842A; --early: #C24A2E;
+    --border: rgba(77,69,168,0.12); --shadow: 0 2px 24px rgba(28,27,31,0.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Manrope',sans-serif; background: var(--cream); color: var(--ink); min-height: 100vh; display: flex; flex-direction: column; }
+  .progress-rail { position: fixed; top:0; left:0; right:0; height:3px; background: var(--nsag-light); z-index:100; }
+  .progress-fill { height:100%; background: var(--m); transition: width 0.4s ease; }
+  header { padding: 20px 32px; display:flex; align-items:center; justify-content:space-between; border-bottom: 1px solid var(--border); background: var(--white); }
+  .logo { font-family:'Syne',sans-serif; font-weight:700; font-size:15px; letter-spacing:0.12em; color: var(--nsag); text-transform:uppercase; }
+  .module-badge { font-family:'DM Mono',monospace; font-size:11px; font-weight:500; letter-spacing:0.08em; color: var(--m); background: var(--m-light); padding:4px 10px; border-radius:2px; text-transform:uppercase; }
+  .screen { display:none; flex:1; align-items:center; justify-content:center; padding:48px 24px; min-height:calc(100vh - 61px); }
+  .screen.active { display:flex; }
+  .welcome-card { max-width:640px; width:100%; text-align:center; }
+  .welcome-eyebrow { font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.14em; color: var(--m); text-transform:uppercase; margin-bottom:20px; }
+  .welcome-title { font-family:'Cormorant Garamond',serif; font-size:clamp(36px,5vw,52px); font-weight:600; line-height:1.1; color: var(--ink); margin-bottom:24px; }
+  .welcome-title em { font-style:italic; color: var(--nsag); }
+  .welcome-desc { font-size:16px; line-height:1.7; color: var(--ink-mid); margin-bottom:12px; }
+  .welcome-meta { font-family:'DM Mono',monospace; font-size:12px; color: var(--ink-soft); margin-bottom:40px; }
+  .btn-primary { display:inline-block; background: var(--nsag); color: var(--white); font-family:'Syne',sans-serif; font-weight:600; font-size:14px; letter-spacing:0.04em; padding:14px 36px; border:none; cursor:pointer; transition:background 0.2s; border-radius:2px; }
+  .btn-primary:hover { background:#3D3698; }
+  .disclaimer { margin-top:24px; font-size:12px; color: var(--ink-soft); line-height:1.6; }
+  .question-wrap { max-width:680px; width:100%; }
+  .q-meta { display:flex; align-items:center; gap:12px; margin-bottom:32px; }
+  .q-dimension { font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.1em; color: var(--m); text-transform:uppercase; }
+  .q-counter { font-family:'DM Mono',monospace; font-size:11px; color: var(--ink-soft); }
+  .q-text { font-family:'Syne',sans-serif; font-size:clamp(18px,2.5vw,22px); font-weight:600; line-height:1.4; color: var(--ink); margin-bottom:32px; padding-left:16px; border-left:3px solid var(--m); }
+  .options { display:flex; flex-direction:column; gap:12px; margin-bottom:40px; }
+  .option { background: var(--white); border:1.5px solid var(--border); border-radius:4px; padding:16px 20px; cursor:pointer; font-size:15px; line-height:1.5; color: var(--ink-mid); transition:border-color 0.2s,background 0.2s,color 0.2s; text-align:left; }
+  .option:hover { border-color: var(--nsag); color: var(--ink); background: var(--nsag-light); }
+  .option.selected { border-color: var(--nsag); background: var(--nsag-light); color: var(--nsag); font-weight:600; }
+  .q-nav { display:flex; justify-content:space-between; align-items:center; }
+  .btn-back { background:none; border:none; font-family:'Manrope',sans-serif; font-size:14px; color: var(--ink-soft); cursor:pointer; padding:10px 0; transition:color 0.2s; }
+  .btn-back:hover { color: var(--ink); }
+  .btn-next { background: var(--nsag); color: var(--white); font-family:'Syne',sans-serif; font-weight:600; font-size:14px; padding:12px 28px; border:none; cursor:pointer; border-radius:2px; transition:background 0.2s,opacity 0.2s; }
+  .btn-next:disabled { opacity:0.35; cursor:not-allowed; }
+  .btn-next:not(:disabled):hover { background:#3D3698; }
+  .calculating-wrap { text-align:center; max-width:480px; }
+  .calc-label { font-family:'DM Mono',monospace; font-size:12px; letter-spacing:0.1em; color: var(--ink-soft); text-transform:uppercase; margin-bottom:24px; }
+  .calc-number { font-family:'Cormorant Garamond',serif; font-size:96px; font-weight:600; color: var(--nsag); line-height:1; margin-bottom:8px; }
+  .calc-bar { width:100%; height:4px; background: var(--nsag-light); border-radius:2px; overflow:hidden; margin-bottom:24px; }
+  .calc-fill { height:100%; background: var(--m); width:0; transition:width 2s ease; }
+  .result-wrap { max-width:680px; width:100%; }
+  .result-header { margin-bottom:40px; padding-bottom:40px; border-bottom:1px solid var(--border); }
+  .result-eyebrow { font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.12em; color: var(--ink-soft); text-transform:uppercase; margin-bottom:16px; }
+  .tier-name { font-family:'Cormorant Garamond',serif; font-size:clamp(52px,8vw,80px); font-weight:600; line-height:1; margin-bottom:16px; opacity:0; transform:translateY(12px); transition:opacity 0.6s ease,transform 0.6s ease; }
+  .tier-name.revealed { opacity:1; transform:translateY(0); }
+  .tier-name.pioneering { color: var(--pioneering); }
+  .tier-name.emerging { color: var(--emerging); }
+  .tier-name.developing { color: var(--developing); }
+  .tier-name.early { color: var(--early); }
+  .tier-desc { font-size:16px; line-height:1.7; color: var(--ink-mid); max-width:520px; }
+  .gate-section { background: var(--white); border:1.5px solid var(--border); border-radius:4px; padding:32px; margin-bottom:24px; }
+  .gate-title { font-family:'Syne',sans-serif; font-weight:700; font-size:16px; color: var(--ink); margin-bottom:8px; }
+  .gate-desc { font-size:14px; color: var(--ink-mid); margin-bottom:24px; line-height:1.6; }
+  .gate-form { display:flex; gap:12px; flex-wrap:wrap; }
+  .gate-input { flex:1; min-width:200px; padding:12px 16px; font-family:'Manrope',sans-serif; font-size:14px; border:1.5px solid var(--border); background: var(--cream); color: var(--ink); border-radius:2px; outline:none; transition:border-color 0.2s; }
+  .gate-input:focus { border-color: var(--nsag); }
+  .btn-gate { background: var(--m); color: var(--white); font-family:'Syne',sans-serif; font-weight:600; font-size:14px; padding:12px 24px; border:none; cursor:pointer; border-radius:2px; white-space:nowrap; }
+  .dimensions { display:flex; flex-direction:column; gap:16px; margin-top:24px; }
+  .dimension-row { background: var(--white); border:1px solid var(--border); border-radius:4px; padding:20px 24px; }
+  .dim-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+  .dim-name { font-family:'Syne',sans-serif; font-weight:600; font-size:13px; color: var(--ink); text-transform:uppercase; letter-spacing:0.05em; }
+  .dim-tier { font-family:'DM Mono',monospace; font-size:11px; font-weight:500; letter-spacing:0.08em; padding:3px 8px; border-radius:2px; }
+  .dim-tier.pioneering { background:#E8F5E6; color: var(--pioneering); }
+  .dim-tier.emerging { background:#E4F3F0; color: var(--emerging); }
+  .dim-tier.developing { background:#FBF3E4; color: var(--developing); }
+  .dim-tier.early { background:#FBE9E6; color: var(--early); }
+  .dim-bar-rail { height:4px; background: var(--nsag-light); border-radius:2px; overflow:hidden; margin-bottom:10px; }
+  .dim-bar-fill { height:100%; border-radius:2px; transition:width 0.8s ease; }
+  .dim-finding { font-size:13px; color: var(--ink-mid); line-height:1.5; }
+  .blurred { filter:blur(6px); pointer-events:none; user-select:none; }
+  .cta-section { margin-top:32px; padding:28px 32px; background: var(--nsag); border-radius:4px; display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap; }
+  .cta-text { color: var(--white); }
+  .cta-text strong { display:block; font-family:'Syne',sans-serif; font-size:15px; margin-bottom:4px; }
+  .cta-text span { font-size:13px; opacity:0.8; }
+  .btn-cta { background: var(--white); color: var(--nsag); font-family:'Syne',sans-serif; font-weight:700; font-size:13px; letter-spacing:0.04em; padding:11px 22px; border:none; border-radius:2px; cursor:pointer; }
+  .success-msg { display:none; background:#E8F5E6; border:1px solid var(--pioneering); border-radius:4px; padding:14px 20px; font-size:14px; color: var(--pioneering); margin-top:12px; }
+  footer { padding:20px 32px; border-top:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+  .footer-text { font-size:12px; color: var(--ink-soft); }
+  .footer-link { font-size:12px; color: var(--nsag); text-decoration:none; }
+  .footer-link:hover { text-decoration:underline; }
+  @media (max-width:600px) { header { padding:16px 20px; } .screen { padding:32px 16px; } .gate-form { flex-direction:column; } .cta-section { flex-direction:column; align-items:flex-start; } }
+</style>
+</head>
+<body>
+<div class="progress-rail"><div class="progress-fill" id="progressFill"></div></div>
+<header>
+  <div class="logo">NSAG</div>
+  <div class="module-badge">M3 · Psychedelic Harm Reduction</div>
+</header>
+<div class="screen active" id="screenWelcome">
+  <div class="welcome-card">
+    <div class="welcome-eyebrow">Neurocognitive Systems Advisory Group</div>
+    <h1 class="welcome-title">Psychedelic Harm Reduction<br><em>Governance Readiness</em></h1>
+    <p class="welcome-desc">As psychedelic-assisted therapy moves from clinical trials to state-legal practice, organizations need governance infrastructure — not just intention. This assessment measures your readiness across six dimensions of responsible harm reduction governance.</p>
+    <p class="welcome-meta">6 dimensions · 12 questions · 10 minutes</p>
+    <button class="btn-primary" onclick="startAssessment()">Begin Assessment</button>
+    <p class="disclaimer">Your overall tier is shown immediately at no cost. Full dimension breakdown delivered by email.</p>
+  </div>
+</div>
+<div class="screen" id="screenQuestion">
+  <div class="question-wrap">
+    <div class="q-meta"><span class="q-dimension" id="qDimension"></span><span class="q-counter" id="qCounter"></span></div>
+    <div class="q-text" id="qText"></div>
+    <div class="options" id="qOptions"></div>
+    <div class="q-nav">
+      <button class="btn-back" id="btnBack" onclick="prevQuestion()">← Back</button>
+      <button class="btn-next" id="btnNext" onclick="nextQuestion()" disabled>Continue →</button>
+    </div>
+  </div>
+</div>
+<div class="screen" id="screenCalculating">
+  <div class="calculating-wrap">
+    <div class="calc-label">Calculating your score</div>
+    <div class="calc-number" id="calcNumber">0</div>
+    <div class="calc-bar"><div class="calc-fill" id="calcFill"></div></div>
+    <div class="calc-label" id="calcStatus">Analyzing your responses...</div>
+  </div>
+</div>
+<div class="screen" id="screenResult">
+  <div class="result-wrap">
+    <div class="result-header">
+      <div class="result-eyebrow">Your organization is</div>
+      <div class="tier-name" id="tierName"></div>
+      <p class="tier-desc" id="tierDesc"></p>
+    </div>
+    <div class="gate-section" id="gateSection">
+      <div class="gate-title">See your full dimension-by-dimension breakdown</div>
+      <div class="gate-desc">Your complete report shows where you score on each dimension with specific findings and recommended next steps.</div>
+      <div class="gate-form">
+        <input type="email" class="gate-input" id="gateEmail" placeholder="Work email address" />
+        <input type="text" class="gate-input" id="gateOrg" placeholder="Organization name" />
+        <button class="btn-gate" onclick="submitGate()">Send My Report</button>
+      </div>
+      <div class="success-msg" id="gateSuccess">Received. We'll follow up within 24 hours with your full dimension report.</div>
+    </div>
+    <div class="dimensions blurred" id="dimensionsSection"></div>
+    <div class="cta-section">
+      <div class="cta-text">
+        <strong>Ready to move up a tier?</strong>
+        <span>NSAG M3 advisory — from $8,500 for a 90-day engagement.</span>
+      </div>
+      <button class="btn-cta" onclick="window.location.href='mailto:collins.ra@northeastern.edu?subject=NSAG M3 Advisory Inquiry'">Talk to an Advisor</button>
+    </div>
+  </div>
+</div>
+<footer>
+  <span class="footer-text">© 2026 RN Collins LLC · Aloha AI Consulting · NSAG Framework</span>
+  <a href="mailto:collins.ra@northeastern.edu" onclick="navigator.clipboard.writeText('collins.ra@northeastern.edu')" class="footer-link">Contact the Architect</a>
+</footer>
+<script>
+const QUESTIONS = [
+  {
+    dimension: "Policy Clarity",
+    dimKey: "policy",
+    text: "Does your organization have a written harm reduction policy specifically governing psychedelic programming?",
+    options: [
+      { text: "Comprehensive written policy, publicly available and regularly reviewed", score: 3 },
+      { text: "Written policy exists but is informal or not regularly updated", score: 2 },
+      { text: "Policy is in draft — not yet formally adopted", score: 1 },
+      { text: "No written harm reduction policy", score: 0 }
+    ]
+  },
+  {
+    dimension: "Policy Clarity",
+    dimKey: "policy",
+    text: "Does your policy define the scope of services, contraindications, and practitioner accountability requirements?",
+    options: [
+      { text: "Yes — all three elements clearly defined with specific standards", score: 3 },
+      { text: "Two elements defined; one is absent or vague", score: 2 },
+      { text: "One element defined; significant gaps remain", score: 1 },
+      { text: "No — scope and requirements are not formally defined", score: 0 }
+    ]
+  },
+  {
+    dimension: "Practitioner Accountability",
+    dimKey: "practitioners",
+    text: "Are practitioners screened, trained, and supervised under a defined standard?",
+    options: [
+      { text: "Yes — formal screening, training requirement, and ongoing supervision structure", score: 3 },
+      { text: "Screening and training exist; supervision is informal", score: 2 },
+      { text: "Training exists; screening and supervision are minimal", score: 1 },
+      { text: "No formal practitioner accountability structure", score: 0 }
+    ]
+  },
+  {
+    dimension: "Practitioner Accountability",
+    dimKey: "practitioners",
+    text: "Is there a clear scope-of-practice definition for your practitioners?",
+    options: [
+      { text: "Yes — documented and enforced, with defined limits of competence", score: 3 },
+      { text: "Informal understanding of scope but not documented", score: 2 },
+      { text: "Scope discussed but not formally defined", score: 1 },
+      { text: "No scope of practice definition exists", score: 0 }
+    ]
+  },
+  {
+    dimension: "Emergency Response",
+    dimKey: "emergency",
+    text: "Does your organization have a documented emergency response protocol for adverse events during sessions?",
+    options: [
+      { text: "Yes — documented, drilled at least annually, with named medical support contacts", score: 3 },
+      { text: "Written protocol exists but has not been drilled", score: 2 },
+      { text: "Informal protocol — not written, not drilled", score: 1 },
+      { text: "No emergency response protocol", score: 0 }
+    ]
+  },
+  {
+    dimension: "Emergency Response",
+    dimKey: "emergency",
+    text: "Do all practitioners know who to call and what to do in a psychiatric emergency?",
+    options: [
+      { text: "Yes — trained, contacts confirmed, scenario-drilled", score: 3 },
+      { text: "Yes — trained but not drilled", score: 2 },
+      { text: "Generally understood but not formalized", score: 1 },
+      { text: "No clear emergency protocol is in place", score: 0 }
+    ]
+  },
+  {
+    dimension: "Community Engagement",
+    dimKey: "community",
+    text: "Has your organization engaged communities most affected by psychedelic criminalization in its governance design?",
+    options: [
+      { text: "Ongoing — community members are in governance roles, not just consulted", score: 3 },
+      { text: "Formal consultation occurred during design phase", score: 2 },
+      { text: "Informal community feedback was considered", score: 1 },
+      { text: "Community engagement has not occurred", score: 0 }
+    ]
+  },
+  {
+    dimension: "Community Engagement",
+    dimKey: "community",
+    text: "Does your organization's programming reflect the knowledge, traditions, and concerns of communities with historical relationships to these medicines?",
+    options: [
+      { text: "Yes — cultural humility is formalized in policy and practice", score: 3 },
+      { text: "Yes — acknowledged in training but not in formal policy", score: 2 },
+      { text: "Partially — some consideration but not systematic", score: 1 },
+      { text: "No — programming does not formally address this", score: 0 }
+    ]
+  },
+  {
+    dimension: "Integration Support",
+    dimKey: "integration",
+    text: "Does your organization provide or connect participants with integration support following sessions?",
+    options: [
+      { text: "Yes — built into programming, not optional, with trained integration practitioners", score: 3 },
+      { text: "Referral network available; integration encouraged but optional", score: 2 },
+      { text: "Informal guidance given; no structured integration pathway", score: 1 },
+      { text: "No integration support is offered or facilitated", score: 0 }
+    ]
+  },
+  {
+    dimension: "Integration Support",
+    dimKey: "integration",
+    text: "Is integration support available without significant cost barriers for participants?",
+    options: [
+      { text: "Yes — included in service or fully subsidized", score: 3 },
+      { text: "Partially subsidized or sliding scale available", score: 2 },
+      { text: "Available at full cost; financial assistance is ad hoc", score: 1 },
+      { text: "No integration support is available at any cost level", score: 0 }
+    ]
+  },
+  {
+    dimension: "Legal Compliance",
+    dimKey: "legal",
+    text: "Is your organization in compliance with the applicable state framework for your psychedelic programming?",
+    options: [
+      { text: "Yes — licensed, compliant, and with active legal counsel in this area", score: 3 },
+      { text: "Compliance reviewed; legal counsel consulted", score: 2 },
+      { text: "Compliance being assessed; operating on best-effort basis", score: 1 },
+      { text: "Legal compliance has not been formally reviewed", score: 0 }
+    ]
+  },
+  {
+    dimension: "Legal Compliance",
+    dimKey: "legal",
+    text: "Does your organization participate in the state regulatory process (public comment, stakeholder engagement, compliance training)?",
+    options: [
+      { text: "Yes — active participant in regulatory development and ongoing compliance", score: 3 },
+      { text: "Participates in major regulatory events; monitoring ongoing", score: 2 },
+      { text: "Periodic engagement; not systematically", score: 1 },
+      { text: "No participation in regulatory process", score: 0 }
+    ]
+  },
+];
+
+const DIM_FINDINGS = {
+  policy: {
+    pioneering: 'Your harm reduction policy is comprehensive, current, and publicly available — the governance foundation for everything else.',
+    emerging: 'A written policy exists but needs regular review and updating to keep pace with evolving state frameworks.',
+    developing: 'Policy is in draft or informal stages. Until it is formally adopted, your governance structure cannot be defended under scrutiny.',
+    early: 'No written harm reduction policy exists. This is the highest-priority gap — without a policy, all other governance work lacks a foundation.',
+  },
+  practitioners: {
+    pioneering: 'Practitioner screening, training, and supervision are formalized with documented standards and scope-of-practice boundaries.',
+    emerging: 'Training and screening are in place, but supervision is informal. Scope of practice needs formal documentation.',
+    developing: 'Some training exists but practitioner accountability is minimal. Supervision and scope definition are missing.',
+    early: 'No formal practitioner accountability structure. This is a significant liability exposure in any regulated psychedelic context.',
+  },
+  emergency: {
+    pioneering: 'Emergency response is documented, drilled, and current — with named medical contacts and scenario-tested protocols.',
+    emerging: 'Written protocol exists but has not been tested through drills. Documentation alone is insufficient for high-stakes situations.',
+    developing: 'Informal understanding of emergency response exists but nothing is written or drilled.',
+    early: 'No emergency response protocol. A single serious adverse event without a protocol creates severe liability and safety risk.',
+  },
+  community: {
+    pioneering: 'Community members most affected by criminalization are in governance roles — not just consulted. Cultural humility is policy.',
+    emerging: 'Community consultation occurred. The gap is moving from consultation to ongoing participation.',
+    developing: 'Some community consideration, but it is informal and unsystematic.',
+    early: 'Community engagement has not occurred. This represents both an ethical gap and a governance vulnerability.',
+  },
+  integration: {
+    pioneering: 'Integration support is built into programming, non-optional, and delivered by trained practitioners.',
+    emerging: 'Integration referrals are available but optional. Without structured follow-through, outcomes are inconsistent.',
+    developing: 'Informal integration guidance only. No structured pathway for participants.',
+    early: 'No integration support. Research consistently shows integration is where therapeutic outcomes are determined or lost.',
+  },
+  legal: {
+    pioneering: 'Legal compliance is verified, actively maintained, and supported by counsel with specific expertise in this area.',
+    emerging: 'Compliance reviewed with legal counsel consulted. Ongoing monitoring is the next step.',
+    developing: 'Operating on best-effort compliance. A formal review with specialized counsel is needed.',
+    early: 'Legal compliance has not been formally reviewed. In a state-regulated context, this is an immediate priority.',
+  },
+};
+
+const TIER_INFO = {
+  pioneering: { label: "Pioneering", cssClass: "pioneering", desc: "Your organization has built strong governance infrastructure across multiple dimensions. The work now is to maintain these systems under pressure and close remaining gaps." },
+  emerging: { label: "Emerging", cssClass: "emerging", desc: "Your organization is building in the right direction. Meaningful structures are in place. The remaining gaps are specific and addressable — this is where targeted interventions produce the most measurable improvement." },
+  developing: { label: "Developing", cssClass: "developing", desc: "Your organization has early-stage infrastructure. Some awareness and individual supports exist, but systemic conditions have not yet been addressed. The risk of incidents, liability, and trust erosion is real." },
+  early: { label: "Early Stage", cssClass: "early", desc: "Governance infrastructure for this domain does not yet meaningfully exist in your organization. The path forward starts with a leadership conversation and a formal assessment of what needs to be built first." }
+};
+
+let currentQ = 0, answers = new Array(QUESTIONS.length).fill(null), scores = {};
+
+function startAssessment() {
+  document.getElementById('screenWelcome').classList.remove('active');
+  document.getElementById('screenQuestion').classList.add('active');
+  renderQuestion(0);
+}
+
+function renderQuestion(idx) {
+  const q = QUESTIONS[idx];
+  document.getElementById('qDimension').textContent = q.dimension;
+  document.getElementById('qCounter').textContent = (idx+1) + ' of ' + QUESTIONS.length;
+  document.getElementById('qText').textContent = q.text;
+  document.getElementById('btnBack').style.visibility = idx === 0 ? 'hidden' : 'visible';
+  const optDiv = document.getElementById('qOptions');
+  optDiv.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option' + (answers[idx] === i ? ' selected' : '');
+    btn.textContent = opt.text;
+    btn.onclick = () => { answers[idx] = i; document.querySelectorAll('.option').forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); document.getElementById('btnNext').disabled = false; };
+    optDiv.appendChild(btn);
+  });
+  document.getElementById('progressFill').style.width = (idx / QUESTIONS.length * 100) + '%';
+  document.getElementById('btnNext').disabled = answers[idx] === null;
+  currentQ = idx;
+}
+
+function nextQuestion() { currentQ < QUESTIONS.length - 1 ? renderQuestion(++currentQ) : showCalculating(); }
+function prevQuestion() { if (currentQ > 0) renderQuestion(--currentQ); }
+
+function getTier(s) { return s >= 80 ? 'pioneering' : s >= 60 ? 'emerging' : s >= 40 ? 'developing' : 'early'; }
+
+function calculateScores() {
+  const dimRaw = {}, dimCount = {};
+  QUESTIONS.forEach((q, i) => {
+    if (!dimRaw[q.dimKey]) { dimRaw[q.dimKey] = 0; dimCount[q.dimKey] = 0; }
+    dimRaw[q.dimKey] += q.options[answers[i]].score;
+    dimCount[q.dimKey]++;
+  });
+  const dimNorm = {};
+  Object.keys(dimRaw).forEach(k => { dimNorm[k] = Math.round((dimRaw[k] / (dimCount[k] * 3)) * 100); });
+  scores = dimNorm;
+  const overall = Math.round(Object.values(dimNorm).reduce((a,b) => a+b, 0) / Object.keys(dimNorm).length);
+  return { overall, dimensions: dimNorm };
+}
+
+function showCalculating() {
+  document.getElementById('screenQuestion').classList.remove('active');
+  document.getElementById('screenCalculating').classList.add('active');
+  document.getElementById('progressFill').style.width = '100%';
+  const final = calculateScores();
+  let count = 0;
+  const ci = setInterval(() => { count = Math.min(count + 2, final.overall); document.getElementById('calcNumber').textContent = count; if (count >= final.overall) clearInterval(ci); }, 30);
+  document.getElementById('calcFill').style.width = final.overall + '%';
+  setTimeout(() => showResults(final), 2800);
+}
+
+function showResults(final) {
+  document.getElementById('screenCalculating').classList.remove('active');
+  document.getElementById('screenResult').classList.add('active');
+  const tier = getTier(final.overall), info = TIER_INFO[tier];
+  const el = document.getElementById('tierName');
+  el.textContent = info.label; el.className = 'tier-name ' + info.cssClass;
+  setTimeout(() => el.classList.add('revealed'), 100);
+  document.getElementById('tierDesc').textContent = info.desc;
+  renderDimensions(final.dimensions);
+}
+
+function renderDimensions(dimNorm) {
+  const colors = { pioneering: '#2E5A28', emerging: '#1B7A68', developing: '#B8842A', early: '#C24A2E' };
+  const dimLabels = {'policy': 'Policy Clarity', 'practitioners': 'Practitioner Accountability', 'emergency': 'Emergency Response', 'community': 'Community Engagement', 'integration': 'Integration Support', 'legal': 'Legal Compliance'};
+  const container = document.getElementById('dimensionsSection');
+  container.innerHTML = '';
+  Object.keys(dimNorm).forEach(key => {
+    const score = dimNorm[key], tier = getTier(score), label = dimLabels[key] || key;
+    const finding = DIM_FINDINGS[key] ? DIM_FINDINGS[key][tier] : 'Score: ' + score + '/100';
+    container.innerHTML += `<div class="dimension-row"><div class="dim-header"><span class="dim-name">${label}</span><span class="dim-tier ${tier}">${tier === 'early' ? 'Early Stage' : tier.charAt(0).toUpperCase() + tier.slice(1)}</span></div><div class="dim-bar-rail"><div class="dim-bar-fill" style="width:${score}%;background:${colors[tier]}"></div></div><p class="dim-finding">${finding}</p></div>`;
+  });
+
+}
+function submitGate() {
+  const email = document.getElementById('gateEmail').value;
+  if (!email || !email.includes('@')) { document.getElementById('gateEmail').focus(); return; }
+  const org = document.getElementById('gateOrg').value;
+  fetch('https://nsag-api.vercel.app/api/lead', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, org, source: 'nsag-m3', module: 'M3', tier: getTier(Object.values(scores).reduce((a,b)=>a+b,0)/Object.keys(scores).length), scores, timestamp: new Date().toISOString() })
+  }).catch(() => {});
+  document.getElementById('gateSuccess').style.display = 'block';
+  document.getElementById('dimensionsSection').classList.remove('blurred');
+  document.getElementById('gateSection').style.opacity = '0.5';
+  document.getElementById('gateSection').style.pointerEvents = 'none';
+}
+</script>
+</body>
+</html>
