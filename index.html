@@ -261,14 +261,21 @@ body{font-family:'Manrope',sans-serif;background:#F6F3EC!important;color:#1C1B1F
         </div>
         <div id="main-intro">
         <div class="intro-tag">M3 · Psychedelic Harm Reduction Governance</div>
-        <h1 class="intro-h">How well does your institution govern psychedelic harm reduction governance?</h1>
-        <p class="intro-sub">Set, setting, and supervision are the primary adverse-event determinants in psychedelic-assisted therapy (Johnson et al., 2008). Most organizations offering these services are not fully implementing that evidence. This challenge reveals the governance gap.</p>
-        <p style="font-size:0.82rem;color:var(--muted);line-height:1.6;margin:-0.25rem 0 1.5rem;padding:0.75rem 1rem;background:rgba(0,0,0,0.03);border-radius:8px">This is an educational self-assessment, not a validated test or audit. Your answers stay in your browser to build your result. At the end you can enter an email to receive the PDF report — used only for your report and optional NSAG follow-up, never sold or shared.</p>
+        <div style="font-size:0.78rem;color:var(--muted);margin-bottom:0.85rem">Last reviewed August 2026 — psychedelic-assisted therapy regulation is jurisdiction-variable and changes quickly. Verify current legal status in your jurisdiction before acting on any result here.</div>
+        <h1 class="intro-h">Is your psychedelic program built to prevent an adverse event — or only to respond to one?</h1>
+        <p class="intro-sub">Set, setting, and supervision are the primary adverse-event determinants in psychedelic-assisted therapy (Johnson et al., 2008). Most organizations offering these services are not fully implementing that evidence. This challenge reveals the governance gap — for clinical practices, community harm reduction organizations, research institutions, and retreat or facilitator programs alike.</p>
+        <p style="font-size:0.82rem;color:var(--muted);line-height:1.6;margin:-0.25rem 0 1.5rem;padding:0.75rem 1rem;background:rgba(0,0,0,0.03);border-radius:8px">This is an educational self-assessment, not a validated test or audit. Your answers stay in your browser to build your result. You will get a governance tier — from EARLY STAGE to PIONEERING — scored across all 6 dimensions, plus a PDF report you can bring to your team. At the end you can enter an email to receive that PDF — used only for your report and optional NSAG follow-up, never sold or shared.</p>
         <div class="intro-meta">
           <div class="meta-item"><div class="meta-num">12</div><div class="meta-label">Scenarios</div></div>
           <div class="meta-item"><div class="meta-num">6</div><div class="meta-label">Dimensions</div></div>
           <div class="meta-item"><div class="meta-num">8–10</div><div class="meta-label">Minutes</div></div>
           <div class="meta-item"><div class="meta-num">Free</div><div class="meta-label">No Obligation</div></div>
+        </div>
+        <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem 1.5rem;margin-bottom:1.75rem">
+          <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;color:var(--text);margin-bottom:0.6rem">Why this module exists</h2>
+          <p style="font-size:0.88rem;color:var(--text);line-height:1.7;margin-bottom:0.85rem">Psychedelic-assisted therapy and facilitated psychedelic experiences are moving into licensed, insured, and clinical-adjacent settings faster than the governance infrastructure meant to keep participants safe usually follows. The research is specific about what prevents harm: set, setting, and supervision are the primary adverse-event determinants (Johnson et al., 2008). That finding is a governance obligation, not only a clinical best practice — someone has to document, standardize, and hold the organization accountable to environmental and supervisory standards before, during, and after every session.</p>
+          <p style="font-size:0.88rem;color:var(--text);line-height:1.7;margin-bottom:0.85rem">This challenge tests six dimensions where that obligation becomes concrete: <strong>pre-session screening</strong> (contraindicated medications, psychiatric history, and support network assessed by a trained screener, not self-reported); <strong>set and setting standards</strong> (the session environment assessed against documented criteria, not left to individual facilitators); <strong>facilitator training and supervision</strong> (credentialing specific to psychedelic facilitation, mandatory clinical supervision, and a protocol for stepping a facilitator back when judgment may be impaired); <strong>session protocols</strong> (what happens when a participant asks to stop, and what happens in a medical emergency); <strong>integration support</strong> (a structured post-session period, not an optional add-on); and <strong>adverse event response</strong> (independent review — not review by the facilitator involved — plus outcome measurement rather than only tracking incidents that surface on their own).</p>
+          <p style="font-size:0.88rem;color:var(--text);line-height:1.7">The pattern holds across all six: governance exists where a standard is written down, assigned to a named role, and reviewed independently of the person who ran the session. It does not exist — regardless of how well-intentioned the individual practitioner is — where safety depends on one facilitator's memory and judgment in the moment. This assessment shows you, dimension by dimension, which state your organization is actually in.</p>
         </div>
         <button class="btn-start" onclick="beginFromIntro()">Begin the Challenge →</button>
         </div><!-- end main-intro -->
@@ -558,7 +565,7 @@ function revealResults() {
 
   if (avg >= 3.5) {
     tier = 'PIONEERING'; tierColor = '#2E5A28';
-    rec = 'Your organization is functioning as a genuinely trauma-informed legal environment. Standards are written, tracked, and tied to named accountability. The governance work at this tier is durability — ensuring these standards survive personnel transitions because they are written into policy, so they hold when the people who built them move on.';
+    rec = 'Your organization is functioning as a genuinely governed psychedelic harm reduction program. Screening, set and setting, facilitator supervision, session protocols, integration support, and adverse event response are written, tracked, and tied to named accountability — not dependent on any single facilitator remembering them. The governance work at this tier is durability: making sure these standards survive staff transitions because they are written into policy, so they hold when the people who built them move on.';
     bridgeLabel = 'What to do with a PIONEERING result';
     bridgeText = 'Your governance is operational. The M3 Governance Toolkit contains the measurement framework and documentation audit tools to confirm your governance will survive leadership transitions. The NSAG advisory engagement benchmarks you against peers and builds quarterly accountability.';
     bridgeBtns = '<a href="' + 'https://nsag-site.vercel.app/advisory' + '" target="_blank" class="bridge-btn-primary" style="background:#2E5A28">Book an Advisory Engagement</a>'
@@ -566,7 +573,7 @@ function revealResults() {
     crossModule = 'At PIONEERING tier: consider benchmarking against peer institutions through the NSAG cohort program, and taking the M2 Challenge if your organization uses any AI-assisted legal tools.';
   } else if (avg >= 2.5) {
     tier = 'EMERGING'; tierColor = '#4D45A8';
-    rec = 'Your organization has meaningful trauma-informed practices in place but they are not yet systemic. Most institutions at this tier cross into PIONEERING within one advisory engagement cycle focused on the lowest-scoring dimensions.';
+    rec = 'Your organization has meaningful psychedelic harm reduction governance in place but it is not yet systemic across all six dimensions. Most institutions at this tier cross into PIONEERING within one advisory engagement cycle focused on the lowest-scoring dimensions — typically integration support or adverse event review, since screening and facilitator training tend to mature first.';
     bridgeLabel = 'What to do with an EMERGING result';
     bridgeText = 'You have governance in place. The gap to PIONEERING is in dimensions that are partially implemented — practice exists but policy does not. The M3 Governance Toolkit contains specific policy language for each gap and a 90-day roadmap for institutions at your exact tier.';
     bridgeBtns = '<a href="' + GUMROAD + '" target="_blank" class="bridge-btn-primary" style="background:#4D45A8">Get the M3 Governance Toolkit — $500</a>'
@@ -574,16 +581,16 @@ function revealResults() {
     crossModule = 'If your ' + DIM_NAMES[minDim] + ' score is your lowest gap, the M' + (minDim < 2 ? '2' : minDim < 4 ? '8' : '2') + ' Challenge addresses the governance infrastructure most likely to accelerate your progress in that dimension.';
   } else if (avg >= 1.5) {
     tier = 'DEVELOPING'; tierColor = '#956B18';
-    rec = 'Your organization is meeting baseline legal requirements without yet designing for the physiological realities of trauma. Governance exists in some dimensions but depends on individual champions rather than institutional policy. When that person leaves, the governance leaves with them.';
+    rec = 'Your organization has real practices in some of the six dimensions, but they depend on individual champions rather than institutional policy — a screening step one clinician insists on, a set-and-setting standard one facilitator maintains from memory. When that person leaves, the governance leaves with them.';
     bridgeLabel = 'What to do with a DEVELOPING result';
     bridgeText = 'Your practices work — right now they live in the people who carry them. Writing them into policy is what makes them hold when those people move on. The M3 Governance Toolkit contains policy language templates for all six dimensions, a 90-day action plan built for DEVELOPING institutions, and the measurement framework for proving progress to leadership.';
     bridgeBtns = '<a href="' + GUMROAD + '" target="_blank" class="bridge-btn-primary" style="background:#956B18">Get the M3 Governance Toolkit — $500</a>'
               + '<a href="' + BOOK + '" class="bridge-btn-secondary" style="border:1.5px solid #956B18;color:#956B18">Book a Discovery Call</a>';
-    pioneeringExample = 'What PIONEERING looks like in practice: A legal aid organization in Chicago implemented a trauma-informed waiting room assessment, plain language intake forms tested with clients, and mandatory 20-minute staff debriefs after high-stress interactions. Within 6 months their client satisfaction scores improved 34% and staff reported significantly lower secondary traumatic stress symptoms.';
-    crossModule = 'Your ' + DIM_NAMES[minDim] + ' gap is the highest-leverage starting point. Once M1 governance is in place, take the M2 Challenge if you use any AI or algorithmic tools in client intake or case management.';
+    pioneeringExample = 'What PIONEERING looks like from here: organizations that close this gap fastest usually work one dimension at a time — writing an existing screening practice into a documented protocol, defining set-and-setting criteria that do not depend on which facilitator is on shift, and assigning session-discontinuation and emergency-response steps to a named role instead of individual judgment. Each dimension you write down and assign a name to stops depending on any one person being available.';
+    crossModule = 'Your ' + DIM_NAMES[minDim] + ' gap is the highest-leverage starting point. If your participants include justice-involved individuals, the M1 Challenge addresses the adjacent trauma-informed practice standards. If your organization also navigates cannabis policy, take the M4 Challenge.';
   } else {
     tier = 'EARLY STAGE'; tierColor = '#6B2937';
-    rec = 'Your legal space is producing conditions most likely to re-traumatize the clients you serve. This is a design problem with a design solution. The fastest path forward is not a committee — it is one concrete action this week and governance language in your hands before Monday.';
+    rec = 'Your program is currently producing the conditions most likely to lead to an unmanaged adverse event: screening, set and setting, facilitator supervision, session protocols, integration support, and adverse event response depend on individual judgment rather than written standards. This is a design problem with a design solution. The fastest path forward is not a committee — it is one concrete action this week and governance language in your hands before Monday.';
     bridgeLabel = 'What to do with an EARLY STAGE result';
     bridgeText = 'Most institutions begin here. The fastest path out is one concrete action this week and a governance document in your hands. The M3 Governance Toolkit gives you a 90-day roadmap, specific policy language, and measurement criteria to prove progress to leadership.';
     bridgeBtns = '<a href="' + GUMROAD + '" target="_blank" class="bridge-btn-primary" style="background:#6B2937">Get the M3 Governance Toolkit — $500</a>'
@@ -722,7 +729,7 @@ function copyResults() {
   const score = document.getElementById('tier-score').textContent;
   const dimScores = [0,0,0,0,0,0];
   answers.forEach((a,i) => { if(a) dimScores[QUESTIONS[i].dim] += a; });
-  let text = `NSAG M3 — Psychedelic Harm Reduction Governance Governance Challenge\nTier: ${tier} · ${score}\n\nDimension Scores:\n`;
+  let text = `NSAG M3 — Psychedelic Harm Reduction Governance Challenge\nTier: ${tier} · ${score}\n\nDimension Scores:\n`;
   DIM_NAMES.forEach((n,i) => { text += `  ${n}: ${Math.round((dimScores[i]/8)*100)}%\n`; });
   text += '\nnsag-site.vercel.app/m3';
   navigator.clipboard?.writeText(text).then(() => {
@@ -777,7 +784,7 @@ function cinematicReveal(tier, tierColor, callback) {
   const subText = document.getElementById('reveal-sub-text');
   overlay.style.background = tierColor;
   tierText.textContent = tier;
-  subText.textContent = 'Your M1 governance tier';
+  subText.textContent = 'Your M3 governance tier';
   overlay.classList.add('active');
   setTimeout(() => {
     overlay.classList.remove('active');
@@ -799,7 +806,7 @@ function animateCounter(el, target, suffix, duration) {
 // SHARE RESULT
 function shareResult() {
   const tier = document.getElementById('tier-name').textContent;
-  const text = "My organization scored " + tier + " on the NSAG M3 Psychedelic Harm Reduction Governance Governance Challenge. nsag-site.vercel.app/m3";
+  const text = "My organization scored " + tier + " on the NSAG M3 Psychedelic Harm Reduction Governance Challenge. nsag-site.vercel.app/m3";
   if (navigator.share) { navigator.share({ text }); }
   else { navigator.clipboard?.writeText(text).then(() => alert('Copied to clipboard — ready to paste into LinkedIn or email.')); }
 }
